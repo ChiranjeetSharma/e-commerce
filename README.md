@@ -1,36 +1,93 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🛒 STORE - Premium E-Commerce Explorer
 
-## Getting Started
+STORE is a high-performance, responsive e-commerce application built with Next.js 15. It features a curated product discovery experience, robust cart management, and a sleek, modern UI designed for a premium shopping experience.
 
-First, run the development server:
 
+## Tech Stack
+
+- **Framework**: [Next.js 15](https://nextjs.org/) (App Router)
+- **Styling**: [Tailwind CSS 4](https://tailwindcss.com/)
+- **State Management**: [Zustand](https://github.com/pmndrs/zustand) (with LocalStorage persistence)
+- **Animations**: [Framer Motion](https://www.framer.com/motion/)
+- **Icons**: [Lucide React](https://lucide.dev/)
+- **API Fetching**: [Axios](https://axios-http.com/)
+- **Type Safety**: [TypeScript](https://www.typescriptlang.org/)
+
+
+## Features Implemented
+
+### 1. **Authentication (Mock)**
+- **Login Flow**: Basic login functionality using a mock service.
+- **Session Persistence**: User session is stored in `localStorage` via Zustand.
+- **Protected Routes**: The Shopping Cart page is restricted to logged-in users only.
+
+### 2. **Product Discovery**
+- **Unified Fetching**: Real-time product retrieval from the Fake Store API.
+- **Advanced Search**: Debounced search functionality to prevent unnecessary re-renders.
+- **Category Filtering**: Seamless filtering across all store categories.
+- **Empty & Loading States**: Elegant loaders and "no results" feedback.
+
+### 3. **Product Details**
+- **Dynamic Routing**: Dedicated pages for every product with full description and ratings.
+- **Interactive UI**: Hover zooms and smooth entrance animations.
+
+### 4. **Cart Management**
+- **Persistent Basket**: Items stay in your cart even after refresh.
+- **Quantity Controls**: Add, remove, or update quantities directly from the cart.
+- **Real-time Totals**: Automatic calculation of subtotals, taxes, and shipping.
+
+### 5. **Premium UX**
+- **Dark Mode**: Fully integrated dark theme support with persistence.
+- **Micro-interactions**: Subtle button bounces and hover effects.
+- **Responsive Design**: Flawless experience across mobile, tablet, and desktop.
+
+
+## Setup Instructions
+
+### 1. Prerequisites
+Ensure you have [Node.js](https://nodejs.org/) (v18+) installed.
+
+### 2. Installation
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# Clone the repository and enter the directory
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 3. Environment Variables
+Create a `.env` file in the root directory and add:
+```env
+NEXT_PUBLIC_API_URL=https://fakestoreapi.com
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 4. Run Locally
+```bash
+npm run dev
+```
+Open [http://localhost:3000](http://localhost:3000) to view the application.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-## Learn More
+## Key Decisions & Assumptions
 
-To learn more about Next.js, take a look at the following resources:
+### **1. State Management with Zustand**
+I chose **Zustand** over Redux or Context API because of its boilerplate-free setup and native support for middleware like `persist`. This allowed for an extremely responsive cart experience without the complexity of a global provider wrapping the entire app.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### **2. Service Layer Pattern**
+Instead of calling `axios` inside components, I implemented a `productService`. This decouples the UI from the API structure, making it easy to swap data sources or add caching in the future.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### **3. Absolute Imports**
+Configured `@/*` path aliases for cleaner imports and better maintainability as the project grows.
 
-## Deploy on Vercel
+### **4. Mock Auth Strategy**
+Assumed a session-based mock login since no backend was provided. Used a `ProtectedRoute` component to demonstrate route guarding logic common in production apps.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### **5. Debounced Search**
+Implemented a custom `useDebounce` hook. This is a critical performance optimization that ensures the API is only hit once the user stops typing, rather than on every keystroke.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## Folder Structure
+- `/src/app`: Page routes and layouts.
+- `/src/components`: UI components grouped by feature (layout, product, cart).
+- `/src/services`: API interaction logic.
+- `/src/store`: Zustand state stores.
+- `/src/hooks`: Reusable custom hooks.
+- `/src/types`: TypeScript interfaces.
